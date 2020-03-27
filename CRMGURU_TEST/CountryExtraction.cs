@@ -11,7 +11,7 @@ namespace CRMGURU_TEST
 {
     class CountryExtraction
     {
-        MSSQLConnector connector = new MSSQLConnector();
+        private MSSQLConnector connector;
         public ArrayList Extract ()
         {
             connector.OpenConnect();
@@ -24,7 +24,7 @@ namespace CRMGURU_TEST
 
             SqlCommand command2 = new SqlCommand(sqlExpression1, connector.GetConnect());
             SqlDataReader dr = command2.ExecuteReader();
-            Models.Country tempcn = new Models.Country();
+            
 
             while (dr.Read())
             {

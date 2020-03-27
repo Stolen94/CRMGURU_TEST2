@@ -88,7 +88,7 @@ namespace CRMGURU_TEST
         }
  //=================================================================================================================================================================
  //=================================================================================================================================================================
-        private void button2_Click(object sender, EventArgs e)
+        private void ExtractButton_Click(object sender, EventArgs e)
         {
             CountryExtraction countryExtraction = new CountryExtraction();
             Representation repr = new Representation(countryExtraction.Extract());

@@ -40,7 +40,6 @@ namespace CRMGURU_TEST
 
             MSSQLConnector connector = new MSSQLConnector();
             connector.OpenConnect();
-            int id = 0;
 
             string rqst = "Select * from Регионы Where Название = '" + this.Name + "'";
             SqlCommand command1 = new SqlCommand(rqst, connector.GetConnect());
