@@ -54,33 +54,6 @@ namespace CRMGURU_TEST
         }
 
 
-//========================================================================================================================================================================
-//========================================================================================================================================================================
-       /*  public Country_Info[] ExtractData()
-        {
-            this.OpenConnect();
-            int count = this.GetNumofRecords("Страны");
-            Country_Info[] AllCountries = new Country_Info[count];
-
-            string sqlExpression1 = @"SELECT A.Название,  A.[Код страны],  A.Площадь,  A.Население, B.Название as CAPITAL, C.Название as REGION 
-                                          FROM Страны as A INNER JOIN Города as B ON A.Столица = B.Id
-                                          INNER JOIN Регионы as C ON A.Регион = C.Id";
-             SqlCommand command2 = new SqlCommand(sqlExpression1, this.GetConnect());
-             SqlDataReader dr = command2.ExecuteReader();
-
-              int i = 0;
-              while (dr.Read())
-              {
-                  AllCountries[i] = new Country_Info(dr.GetValue(0).ToString(), dr.GetValue(4).ToString(), dr.GetValue(1).ToString(), Convert.ToDouble(dr.GetValue(2)), Convert.ToInt32(dr.GetValue(3)), dr.GetValue(5).ToString());
-                  i++;
-              }
-
-              dr.Close();
-            this.CloseConnect();
-            return AllCountries;
-        }*/
-//========================================================================================================================================================================
-//========================================================================================================================================================================
 
 
     }

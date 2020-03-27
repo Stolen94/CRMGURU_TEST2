@@ -15,7 +15,7 @@ namespace CRMGURU_TEST
         
         ArrayList TransformResult(SqlDataReader dr);
 
-        int FindIDIfExist();
+        ArrayList FindIfExist();
 
         void InsertinDB();
     }

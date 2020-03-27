@@ -141,8 +141,7 @@ namespace CRMGURU_TEST.Models
 
         public void Show()
         {
-            System.Windows.Forms.MessageBox.Show(Name + " " + Code + " " + cap.Name + " " + Area + " " + Population + " " + reg.Name);
-            //System.Windows.Forms.MessageBox.Show(Name + " " + Code + " "  + Area + " " + Population );
+            System.Windows.Forms.MessageBox.Show(Name + " " + Code + " " + Cap.Name + " " + Cap.Id + " " + Area + " " + Population + " " + Reg.Name + " " + Reg.Id + " ");
         }
 
         public ArrayList TransformResult(SqlDataReader dr)
@@ -152,9 +151,7 @@ namespace CRMGURU_TEST.Models
             
             while (dr.Read())
             {
-                Region TempElement1 = new Region();
-                Capital TempElement2 = new Capital();
-                Country TempElement = new Country("", TempElement2, "", 0, 0, TempElement1);
+                Country TempElement = new Country();
 
                 TempElement.Id = Convert.ToInt32(dr.GetValue(0).ToString());
                 TempElement.Name = dr.GetValue(1).ToString();
@@ -172,12 +169,12 @@ namespace CRMGURU_TEST.Models
             return tempArr;
         }
 
-        public int FindIDIfExist()
+        public ArrayList FindIfExist()
         {
 
             MSSQLConnector connector = new MSSQLConnector();
             connector.OpenConnect();
-            int id = 0;
+
 
             string rqst = "Select * from Страны Where [Код Страны] = '" + this.Code + "'";
 
@@ -185,9 +182,8 @@ namespace CRMGURU_TEST.Models
             SqlDataReader dr = command1.ExecuteReader();
             ArrayList tempArr = TransformResult(dr);
             connector.CloseConnect();
-            if (tempArr.Count == 0) { return 0; }
-            id = ((Country)tempArr[0]).Id;
-            return id;
+            if (tempArr.Count == 0) tempArr.Add(new Models.Country());
+            return tempArr;
             
         }
 
@@ -199,27 +195,12 @@ namespace CRMGURU_TEST.Models
 
             string rqst = @"INSERT INTO Страны (Название, [Код страны], Площадь, Население, Регион, Столица) VALUES "
                           + "('" + this.Name + "','" + this.Code + "'," + this.Area + "," + this.Population + "," + this.Reg.Id + "," + this.Cap.Id + ")";
+            this.Show();
             SqlCommand command2 = new SqlCommand(rqst, connector.GetConnect());
             command2.ExecuteNonQuery();
 
             connector.CloseConnect();
         }
-
-    /*    public ArrayList ExtractAllRecords(string rqst)
-        {
-            MSSQLConnector connector = new MSSQLConnector();
-            connector.OpenConnect();
-            string rqst =  @"SELECT A.Название,  A.[Код страны],  A.Площадь,  A.Население, B.Название as CAPITAL, C.Название as REGION 
-                                          FROM Страны as A INNER JOIN Города as B ON A.Столица = B.Id
-                                          INNER JOIN Регионы as C ON A.Регион = C.Id"; ;
-
-            SqlCommand command1 = new SqlCommand(rqst, connector.GetConnect());
-            SqlDataReader dr = command1.ExecuteReader();
-            ArrayList tempArr = TransformResult(dr);
-            connector.CloseConnect();
-
-            return tempArr;
-        }*/
 
         public void UpdateRecord()
         {

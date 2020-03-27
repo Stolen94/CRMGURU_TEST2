@@ -59,7 +59,7 @@ namespace CRMGURU_TEST.Models
             return tempArr;
         }
 
-        public int FindIDIfExist()
+        public ArrayList FindIfExist()
         {
 
             MSSQLConnector connector = new MSSQLConnector();
@@ -70,11 +70,8 @@ namespace CRMGURU_TEST.Models
             SqlDataReader dr = command1.ExecuteReader();
             ArrayList tempArr = TransformResult(dr);
             connector.CloseConnect();
-            
-            if (tempArr.Count==0) { return 0; }
-            
-            int id = ((Capital)tempArr[0]).Id;
-            return id;
+            if (tempArr.Count == 0) tempArr.Add(new Models.Capital());
+            return tempArr;
         }
 
         public void InsertinDB()
