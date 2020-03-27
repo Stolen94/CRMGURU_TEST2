@@ -3,26 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Configuration;
 using System.Data.SqlClient;
 
 namespace CRMGURU_TEST
 {
     class MSSQLConnector
     {
-        private string connStr = @"Data Source=localhost; Initial Catalog=Country_DB;Integrated Security=True";
+        private string connStr;
         private SqlConnection conn;
-
-//========================================================================================================================================================================
-//========================================================================================================================================================================
+       
+        //========================================================================================================================================================================
+        //========================================================================================================================================================================
         public SqlConnection GetConnect()
         {
+
             return conn;
         }
 //========================================================================================================================================================================
 //========================================================================================================================================================================
         public void OpenConnect()
         {
+            connStr = GetConnectionStringByName("DefaultConnectString");
             conn = new SqlConnection(connStr);
             try
             {
@@ -53,7 +55,19 @@ namespace CRMGURU_TEST
             
         }
 
+            private string GetConnectionStringByName(string name)
+        {
+            // Assume failure.
+            string returnValue = null;
 
+            // Look for the name in the connectionStrings section.
+            ConnectionStringSettings settings = ConfigurationManager.ConnectionStrings[name];
+            // If found, return the connection string.
+            if (settings != null)
+                returnValue = settings.ConnectionString;
+            System.Windows.Forms.MessageBox.Show(returnValue);
+            return returnValue;
+        }
 
 
     }

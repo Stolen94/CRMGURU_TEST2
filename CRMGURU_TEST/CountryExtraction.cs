@@ -14,6 +14,7 @@ namespace CRMGURU_TEST
         private MSSQLConnector connector;
         public ArrayList Extract ()
         {
+            connector = new MSSQLConnector();
             connector.OpenConnect();
             ArrayList list = new ArrayList();
 
