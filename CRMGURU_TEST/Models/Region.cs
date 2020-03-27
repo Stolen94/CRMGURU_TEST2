@@ -10,32 +10,9 @@ namespace CRMGURU_TEST
 {
     public class Region : ISQL
     {
-        private string name;
-        public string Name
-        {
-            get
-            {
-                return name;
-            }
+        public int Id { get; set; }
+        public String Name { get; set; }
 
-            set
-            {
-                name = value;
-            }
-        }
-        private int id;
-        public int Id
-        {
-            get
-            {
-                return id;
-            }
-
-            set
-            {
-                id = value;
-            }
-        }
 
         public Region(int p_id = 0, string p_nm = "")
         {

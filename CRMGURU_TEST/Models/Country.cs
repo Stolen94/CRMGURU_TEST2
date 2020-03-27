@@ -12,80 +12,12 @@ namespace CRMGURU_TEST.Models
 {
     public class Country : ISQL,  ISQLupdate
     {
-        private int id;
-
-        public int Id
-        {
-            get
-            {
-                return id;
-            }
-
-            set
-            {
-                id = value;
-            }
-        }
-
-
-        private string name;
-        public string Name
-        {
-            get
-            {
-                return name;
-            }
-
-            set
-            {
-                name = value;
-            }
-        }
-
-        private string code;
-        public string Code
-        {
-            get
-            {
-                return code;
-            }
-
-            set
-            {
-                code = value;
-            }
-        }
-
-        private int population;
+        public int Id { get; set; }
+        public String Name { get; set; }
+        public String Code { get; set; }
+        public int Population { get; set; }
+        public double Area { get; set; }
         
-        public int Population
-        {
-            get
-            {
-                return population;
-            }
-
-            set
-            {
-                population = value;
-            }
-        }
-
-        private double area;
-
-        public double Area
-        {
-            get
-            {
-                return area;
-            }
-
-            set
-            {
-                area = value;
-            }
-        }
-
         private Region reg;
         public Region Reg
         {

@@ -12,33 +12,9 @@ namespace CRMGURU_TEST.Models
 {
     public class Capital : ISQL
     {
-        private string name;
-        public string Name
-        {
-            get
-            {
-                return name;
-            }
-
-            set
-            {
-                name = value;
-            }
-        }
-        private int id;
-        public int Id
-        {
-            get
-            {
-                return id;
-            }
-
-            set
-            {
-                id = value;
-            }
-        }
-
+        public int Id { get; set; }
+        public String Name { get; set; }
+  
         public Capital(int p_id = 0, string p_nm = "")
         {
             Id = p_id;
