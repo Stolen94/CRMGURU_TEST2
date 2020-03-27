@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections;
-
-using System.Data.SqlClient;
-
+﻿//This class reads all records from 'countries' table, and return them as an ArrayList
 namespace CRMGURU_TEST
 {
+    using System;
+    using System.Collections;
+    using System.Data.SqlClient;
+
     class CountryExtraction
     {
+        // fields
         private MSSQLConnector connector;
-        public ArrayList Extract ()
+
+        // methods
+        public ArrayList Extract()
         {
             connector = new MSSQLConnector();
             connector.OpenConnect();
@@ -23,14 +22,13 @@ namespace CRMGURU_TEST
                                           FROM Страны as A INNER JOIN Города as B ON A.Столица = B.Id
                                           INNER JOIN Регионы as C ON A.Регион = C.Id";
 
-            SqlCommand command2 = new SqlCommand(sqlExpression1, connector.GetConnect());
+            SqlCommand command2 = new SqlCommand(sqlExpression1, connector.conn);
             SqlDataReader dr = command2.ExecuteReader();
-            
 
             while (dr.Read())
             {
                 Models.Capital cp = new Models.Capital(0, dr.GetValue(4).ToString());
-                Region rg = new Region(0, dr.GetValue(5).ToString());
+                Models.Region rg = new Models.Region(0, dr.GetValue(5).ToString());
 
                 list.Add(new Models.Country(dr.GetValue(0).ToString(), cp, dr.GetValue(1).ToString(), Convert.ToDouble(dr.GetValue(2)), Convert.ToInt32(dr.GetValue(3)), rg));
             }

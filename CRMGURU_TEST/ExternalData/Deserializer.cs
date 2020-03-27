@@ -1,40 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Newtonsoft.Json;
-
+﻿//Класс предназначен для преобразования полученной JSON-строки rawData в объект типа Country
+//CountryInfo является вспомогательным классом, предназначенным для десериализации строки rawData
 
 namespace CRMGURU_TEST
 {
+    using Newtonsoft.Json;
+    using System;
+
     class Deserializer
 
-    {
-        public Models.Country Deserialize(string p_RawData)
+    {   //methods
+        public Models.Country Deserialize(string rawData)
         {
-            p_RawData = p_RawData.TrimStart('[');
-            p_RawData = p_RawData.TrimEnd(']');
-            CountryInfo p_CI = new CountryInfo();
-            try { 
-            p_CI = JsonConvert.DeserializeObject<CountryInfo>(p_RawData);
+            CountryInfo countryInfo = new CountryInfo();
+
+            rawData = rawData.TrimStart('[');
+            rawData = rawData.TrimEnd(']');
+            Models.Country tempElement = new Models.Country();
+            try
+            {
+                countryInfo = JsonConvert.DeserializeObject<CountryInfo>(rawData);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 System.Windows.Forms.MessageBox.Show(e.Message);
+                return tempElement;
             }
-            Models.Country TempElement = new Models.Country();
 
-            TempElement.Name = p_CI.Name;
-            TempElement.Code = p_CI.Alpha3Code;
-            TempElement.Area = p_CI.Area;
-            TempElement.Population = p_CI.Population;
-            TempElement.Cap.Name = p_CI.Capital;
-            TempElement.Reg.Name = p_CI.Region;
+            
+            tempElement.Name = countryInfo.Name;
+            tempElement.Code = countryInfo.Alpha3Code;
+            tempElement.Area = countryInfo.Area;
+            tempElement.Population = countryInfo.Population;
+            tempElement.Cap.Name = countryInfo.Capital;
+            tempElement.Reg.Name = countryInfo.Region;
 
             //TempElement.Show();
-            return TempElement;
+            return tempElement;
         }
     }
 }

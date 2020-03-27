@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using System.Data.SqlClient;
-using System.Collections;
-
+﻿//Интерфейс реализуется классом Country
 namespace CRMGURU_TEST
 {
     interface ISQLupdate
     {
-        void UpdateRecord();
+        void UpdateRecord();//Обновляет запись, соответствующую объекту (по Id).
     }
 }

@@ -1,29 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data;
-using System.Collections;
-
+﻿//Класс содержит функции для формирования таблицы, отображаемой в TableView
 namespace CRMGURU_TEST
 {
-    class Representation
+    using System;
+    using System.Collections;
+    using System.Data;
+
+    public class Representation
     {
-        private DataTable table;
+        //properties        
+        public DataTable Table { get; set; }
 
-        public DataTable Table
-        {
-            get
-            {
-                return table;
-            }
-        set
-            {
-                table = value;
-            }
-        }
-
+        //constructors
+        //Таблица для отображения всех стран из базы
         public Representation(ArrayList list)
         {
             Table = new DataTable("Country Information");
@@ -31,12 +19,11 @@ namespace CRMGURU_TEST
 
             for (int i = 0; i < list.Count; i++)
             {
-                Models.Country CI = ((Models.Country)list[i]); 
+                Models.Country CI = ((Models.Country)list[i]);
                 AddRow(CI);
             }
-
         }
-
+        //Таблица для отображения одной страны (найденной в поиске)
         public Representation(Models.Country CI)
         {
             Table = new DataTable("Country Information");
@@ -44,7 +31,8 @@ namespace CRMGURU_TEST
             AddRow(CI);
         }
 
-
+        //methods
+        //Заполнение заголовков
         private void MakeHeaders()
         {
             Table.Columns.Add("Name", typeof(String));
@@ -55,10 +43,11 @@ namespace CRMGURU_TEST
             Table.Columns.Add("Population", typeof(System.Int32));
         }
 
-        public void AddRow(Models.Country CI)
+        //Заполнение строк
+        private void AddRow(Models.Country CI)
         {
             DataRow row;
-            row = table.NewRow();
+            row = Table.NewRow();
             row[0] = CI.Name;
             row[1] = CI.Cap.Name;
             row[2] = CI.Reg.Name;

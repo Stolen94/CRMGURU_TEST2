@@ -1,22 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using System.Data.SqlClient;
-using System.Collections;
-
+﻿//Интерфейс реализуется классами Country, Capital, Region
+//Интерфейс предназначен для взаимодействия объектов классов с базой данных
 namespace CRMGURU_TEST
 {
+    using System.Collections;
+    using System.Data.SqlClient;
+
     public interface ISQL
     {
-        // константа
-        
-        ArrayList TransformResult(SqlDataReader dr);
-
-        ArrayList FindIfExist();
-
-        void InsertinDB();
+        ArrayList FindIfExist();//Поиск записи по заданному в реализации условию, считывание ее в ArrayList
+        void InsertinDB();//Вставка объекта как записи в соответствующую таблицу
+        ArrayList TransformResult(SqlDataReader dr); //Приведение считанной записи к виду объекта, и запись полученного объекта в ArrayList      
     }
 }

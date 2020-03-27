@@ -1,27 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Configuration;
-using System.Data.SqlClient;
-
+﻿//Класс содержит функции для подключения/отключения к базе данных:
 namespace CRMGURU_TEST
 {
+    using System.Configuration;
+    using System.Data.SqlClient;
+
     class MSSQLConnector
     {
+        //fields
         private string connStr;
-        private SqlConnection conn;
-       
-        //========================================================================================================================================================================
-        //========================================================================================================================================================================
-        public SqlConnection GetConnect()
-        {
+        public SqlConnection conn { get; private set; }
 
-            return conn;
-        }
-//========================================================================================================================================================================
-//========================================================================================================================================================================
+        //methods
+       
+        //Установка подключения
         public void OpenConnect()
         {
             connStr = GetConnectionStringByName("DefaultConnectString");
@@ -35,10 +26,8 @@ namespace CRMGURU_TEST
             {
                 System.Windows.Forms.MessageBox.Show("Ошибка подключения: " + e.Message);
             }
-            
         }
-//========================================================================================================================================================================
-//========================================================================================================================================================================
+        //Закрытие подключения
         public void CloseConnect()
         {
             try
@@ -51,25 +40,25 @@ namespace CRMGURU_TEST
             {
                 System.Windows.Forms.MessageBox.Show("Ошибка подключения: " + e.Message);
             }
-
-            
         }
 
-            private string GetConnectionStringByName(string name)
+        //Считывание конфигурационной информации
+        private string GetConnectionStringByName(string name)
         {
-            // Assume failure.
             string returnValue = null;
-
-            // Look for the name in the connectionStrings section.
-            ConnectionStringSettings settings = ConfigurationManager.ConnectionStrings[name];
-            // If found, return the connection string.
-            if (settings != null)
-                returnValue = settings.ConnectionString;
-            System.Windows.Forms.MessageBox.Show(returnValue);
+            try
+            {
+                ConnectionStringSettings settings = ConfigurationManager.ConnectionStrings[name];
+                if (settings != null)
+                    returnValue = settings.ConnectionString;
+                
+            }
+            catch(System.Exception e)
+            {
+                System.Windows.Forms.MessageBox.Show("Ошибка! " + e.Message);
+            }
             return returnValue;
         }
-
-
     }
 
 }

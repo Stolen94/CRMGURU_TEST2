@@ -1,93 +1,94 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-using System.Collections;
-
-
-
-namespace CRMGURU_TEST
+﻿namespace CRMGURU_TEST
 {
+    using System;
+    using System.Windows.Forms;
+
     public partial class Form1 : Form
     {
+        //Constructor
         public Form1()
         {
             InitializeComponent();
         }
-
-//=================================================================================================================================================================
- //=================================================================================================================================================================
-
+        //Methods
         private void SearchButton_Click(object sender, EventArgs e)
         {
             string country = CountryInputBox.Text;
 
             CountryInfoExctractor exctractor = new CountryInfoExctractor();
 
+            //проверка заполненности поля ввода
             if (country == "") { System.Windows.Forms.MessageBox.Show("Input field cannot be empty!"); }
             else
             {
+                //Получение данных о стране в виде строки RawData в формате JSON с помощью внешнего API
                 String RawData = exctractor.RequestCountryInfo(country);
+                
                 if (RawData != "")
                 {
+                    //Десериализация строки RawData в объект CI типа Country
                     Deserializer DSL = new Deserializer();
                     Models.Country CI = DSL.Deserialize(RawData);
-                    
+
+                    //Отображение объекта CI в TableView
                     Representation repr = new Representation(CI);
                     TableView.DataSource = repr.Table;
                     TableView.Visible = true;
 
-                    SaveInfo(CI);
-
-
+                    //Приглашение на сохранение CI
+                    if (CI.Name != "") { SaveInfo(CI); }
                 }
             }
 
         }
-//=================================================================================================================================================================
-//=================================================================================================================================================================
-        private void SaveInfo(Models.Country p_CI)
+      
+        private void SaveInfo(Models.Country CI)
         {
+           //Диалог с предложением сохранения
             DialogResult result = MessageBox.Show("Вы хотите сохранить результат поиска в базу данных?", "Подтвердите действие", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
             if (result == DialogResult.Yes)
             {
-                p_CI.Cap.Id = ((Models.Capital)p_CI.Cap.FindIfExist()[0]).Id;
-                if (p_CI.Cap.Id == 0)
+                //Проверка наличия столицы страны CI в таблице 'Города'.
+                //Если Id не найден, значение CI.сap.Name записывается в таблицу 'Города'
+                //и Id новой записи записывается в CI.Cap.Id
+                CI.Cap.Id = ((Models.Capital)CI.Cap.FindIfExist()[0]).Id;
+                if (CI.Cap.Id == 0)
                 {
-                    p_CI.Cap.InsertinDB();
-                    p_CI.Cap.Id = ((Models.Capital)p_CI.Cap.FindIfExist()[0]).Id;
+                    CI.Cap.InsertinDB();
+                    CI.Cap.Id = ((Models.Capital)CI.Cap.FindIfExist()[0]).Id;
                 }
                 //System.Windows.Forms.MessageBox.Show(p_CI.Cap.Id.ToString());
-                p_CI.Reg.Id = ((Region)p_CI.Reg.FindIfExist()[0]).Id;
-                if (p_CI.Reg.Id == 0)
+
+                //Проверка наличия Региона страны CI в таблице 'Регионы'.
+                //Если Id не найден, значение CI.reg.Name записывается в таблицу 'Регионы'
+                //и Id новой записи записывается в CI.reg.Id
+                CI.Reg.Id = ((Models.Region)CI.Reg.FindIfExist()[0]).Id;
+                if (CI.Reg.Id == 0)
                 {
-                    p_CI.Reg.InsertinDB();
-                    p_CI.Reg.Id = ((Region)p_CI.Reg.FindIfExist()[0]).Id;
+                    CI.Reg.InsertinDB();
+                    CI.Reg.Id = ((Models.Region)CI.Reg.FindIfExist()[0]).Id;
                 }
                 //System.Windows.Forms.MessageBox.Show(p_CI.Reg.Id.ToString());
 
-                p_CI.Id = ((Models.Country)p_CI.FindIfExist()[0]).Id;
-                if (p_CI.Id == 0)
+                //Проверка наличия страны CI в таблице 'Страны'.
+                //Если Id не найден, значение CI.Name записывается в таблицу 'Страны'
+                //и Id новой записи записывается в CI.Id
+                //иначе, значения найденной записи обновляются 
+                CI.Id = ((Models.Country)CI.FindIfExist()[0]).Id;
+                if (CI.Id == 0)
                 {
-                    p_CI.InsertinDB();
-                    p_CI.Id = ((Models.Country)p_CI.FindIfExist()[0]).Id;
+                    CI.InsertinDB();
+                    CI.Id = ((Models.Country)CI.FindIfExist()[0]).Id;
                 }
                 else
                 {
-                    p_CI.UpdateRecord();
+                    CI.UpdateRecord();
                 }
                 System.Windows.Forms.MessageBox.Show("Success.");
             }
         }
- //=================================================================================================================================================================
- //=================================================================================================================================================================
+
+        //Вывод всех стран из базы и отображение их в TableView
         private void ExtractButton_Click(object sender, EventArgs e)
         {
             CountryExtraction countryExtraction = new CountryExtraction();
@@ -95,19 +96,19 @@ namespace CRMGURU_TEST
             TableView.DataSource = repr.Table;
             TableView.Visible = true;
         }
-//=================================================================================================================================================================
-//=================================================================================================================================================================
+
+        //Защита от ввода русских символов и цифр
         private void CountryInputBox_KeyPress_1(object sender, KeyPressEventArgs e)
         {
-                if ((e.KeyChar >= 'A' && e.KeyChar <= 'Z') || (e.KeyChar >= 'a' && e.KeyChar <= 'z') || e.KeyChar == 8 || e.KeyChar == ' ')
-                {
+            if ((e.KeyChar >= 'A' && e.KeyChar <= 'Z') || (e.KeyChar >= 'a' && e.KeyChar <= 'z') || e.KeyChar == 8 || e.KeyChar == ' ')
+            {
 
-                }
-                else
-                {
-                    e.Handled = true;
-                }
-            
+            }
+            else
+            {
+                e.Handled = true;
+            }
+
         }
 
     }
