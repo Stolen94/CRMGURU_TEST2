@@ -13,76 +13,76 @@
         //Methods
         private void SearchButton_Click(object sender, EventArgs e)
         {
-            string country = CountryInputBox.Text;
+            string countryinput = CountryInputBox.Text;
 
             CountryInfoExctractor exctractor = new CountryInfoExctractor();
 
             //проверка заполненности поля ввода
-            if (country == "") { System.Windows.Forms.MessageBox.Show("Input field cannot be empty!"); }
+            if (countryinput == "") { System.Windows.Forms.MessageBox.Show("Input field cannot be empty!"); }
             else
             {
                 //Получение данных о стране в виде строки RawData в формате JSON с помощью внешнего API
-                String RawData = exctractor.RequestCountryInfo(country);
+                String RawData = exctractor.RequestCountryInfo(countryinput);
                 
                 if (RawData != "")
                 {
-                    //Десериализация строки RawData в объект CI типа Country
+                    //Десериализация строки RawData в объект country типа Country
                     Deserializer DSL = new Deserializer();
-                    Models.Country CI = DSL.Deserialize(RawData);
+                    Models.Country country = DSL.Deserialize(RawData);
 
-                    //Отображение объекта CI в TableView
-                    Representation repr = new Representation(CI);
+                    //Отображение объекта country в TableView
+                    Representation repr = new Representation(country);
                     TableView.DataSource = repr.Table;
                     TableView.Visible = true;
 
                     //Приглашение на сохранение CI
-                    if (CI.Name != "") { SaveInfo(CI); }
+                    if (country.Name != "") { SaveInfo(country); }
                 }
             }
 
         }
       
-        private void SaveInfo(Models.Country CI)
+        private void SaveInfo(Models.Country country)
         {
            //Диалог с предложением сохранения
             DialogResult result = MessageBox.Show("Вы хотите сохранить результат поиска в базу данных?", "Подтвердите действие", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == DialogResult.Yes)
             {
-                //Проверка наличия столицы страны CI в таблице 'Города'.
-                //Если Id не найден, значение CI.сap.Name записывается в таблицу 'Города'
-                //и Id новой записи записывается в CI.Cap.Id
-                CI.Cap.Id = ((Models.Capital)CI.Cap.FindIfExist()[0]).Id;
-                if (CI.Cap.Id == 0)
+                //Проверка наличия столицы страны country в таблице 'Города'.
+                //Если Id не найден, значение country.сap.Name записывается в таблицу 'Города'
+                //и Id новой записи записывается в country.Cap.Id
+                country.Cap.Id = ((Models.Capital)country.Cap.FindIfExist()[0]).Id;
+                if (country.Cap.Id == 0)
                 {
-                    CI.Cap.InsertinDB();
-                    CI.Cap.Id = ((Models.Capital)CI.Cap.FindIfExist()[0]).Id;
+                    country.Cap.InsertinDB();
+                    country.Cap.Id = ((Models.Capital)country.Cap.FindIfExist()[0]).Id;
                 }
                 //System.Windows.Forms.MessageBox.Show(p_CI.Cap.Id.ToString());
 
-                //Проверка наличия Региона страны CI в таблице 'Регионы'.
-                //Если Id не найден, значение CI.reg.Name записывается в таблицу 'Регионы'
-                //и Id новой записи записывается в CI.reg.Id
-                CI.Reg.Id = ((Models.Region)CI.Reg.FindIfExist()[0]).Id;
-                if (CI.Reg.Id == 0)
+                //Проверка наличия Региона страны country в таблице 'Регионы'.
+                //Если Id не найден, значение country.reg.Name записывается в таблицу 'Регионы'
+                //и Id новой записи записывается в country.reg.Id
+                country.Reg.Id = ((Models.Region)country.Reg.FindIfExist()[0]).Id;
+                if (country.Reg.Id == 0)
                 {
-                    CI.Reg.InsertinDB();
-                    CI.Reg.Id = ((Models.Region)CI.Reg.FindIfExist()[0]).Id;
+                    country.Reg.InsertinDB();
+                    country.Reg.Id = ((Models.Region)country.Reg.FindIfExist()[0]).Id;
                 }
                 //System.Windows.Forms.MessageBox.Show(p_CI.Reg.Id.ToString());
 
-                //Проверка наличия страны CI в таблице 'Страны'.
-                //Если Id не найден, значение CI.Name записывается в таблицу 'Страны'
-                //и Id новой записи записывается в CI.Id
+                //Проверка наличия страны country в таблице 'Страны'.
+                //Если Id не найден, значение country.Name записывается в таблицу 'Страны'
+                //и Id новой записи записывается в country.Id
                 //иначе, значения найденной записи обновляются 
-                CI.Id = ((Models.Country)CI.FindIfExist()[0]).Id;
-                if (CI.Id == 0)
+                country.Id = ((Models.Country)country.FindIfExist()[0]).Id;
+                if (country.Id == 0)
                 {
-                    CI.InsertinDB();
-                    CI.Id = ((Models.Country)CI.FindIfExist()[0]).Id;
+                    country.InsertinDB();
+                    country.Id = ((Models.Country)country.FindIfExist()[0]).Id;
                 }
                 else
                 {
-                    CI.UpdateRecord();
+                    country.UpdateRecord();
                 }
                 System.Windows.Forms.MessageBox.Show("Success.");
             }
